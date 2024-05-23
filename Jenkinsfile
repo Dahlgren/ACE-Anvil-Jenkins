@@ -33,3 +33,14 @@ pipeline {
     }
   }
 }
+
+def findAddons() {
+  dir('addons') {
+    findFiles().each { file ->
+      if (file.isDirectory()) {
+        def addon = file.toString().replace("/", "")
+        bat "\"%ARMA_REFORGER_TOOLS%\\Workbench\\ArmaReforgerWorkbenchSteamDiag.exe\" -enableWARP -noThrow -wbModule=ResourceManager -addonsDir \"%ARMA_REFORGER%/addons/,%WORKSPACE%/addons/\" -addons \"${addon}\" -profile \"%WORKSPACE%/profiles/${addon}-pack\" -packAddon -packAddonDir \"%WORKSPACE%/pack/${addon}\""
+      }
+    }
+  }
+}
